@@ -24,10 +24,16 @@ app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
 connectSocket(server);
 
 
-
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        msg: "Server working well",
+    })
+})
 app.use("/user", userRouter);
 app.use("/auth", otpRouter);
 app.use('/getUser', getUserRouter);
+
 
 server.listen(8000, async () => {
     await mongoose.connect(process.env.MONGODB_URL);
