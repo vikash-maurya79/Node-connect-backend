@@ -6,11 +6,9 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
- 
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     strategy:
@@ -18,25 +16,28 @@ jobs:
         node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-  steps:
-  - name: Backup .env
-    run: |
-      if [ -f .env ]; then mv .env /temp/env_backup; fi
-  - uses: actions/checkout@v4
+    steps:
+      - name: Backup .env
+        run: |
+          if [ -f .env ]; then mv .env /tmp/env_backup; fi
 
-  - name: Restore .env
-    run: | 
-       if [ -f /tmp/env_backup ]; then mv /tmp/env_backup .env; fi
+      - uses: actions/checkout@v4
 
-  - name: Use Node.js ${{ matrix.node-version }}
-    uses: actions/setup-node@v4
-    with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-  - name : Install dependencies
-    run: npm ci
-  - name : Build project
-    run: npm run build --if-present
-  - name : Restart pm2
-    run: sudo pm2 restart backend
-   
+      - name: Restore .env
+        run: |
+          if [ -f /tmp/env_backup ]; then mv /tmp/env_backup .env; fi
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build --if-present
+
+      - name: Restart pm2
+        run: sudo pm2 restart backend
