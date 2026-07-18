@@ -27,7 +27,7 @@ connectSocket(server);
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
-        msg: "Check env backup again : Server working well",
+        msg: "Check env backup : Server working well",
     })
 })
 app.use("/user", userRouter);
