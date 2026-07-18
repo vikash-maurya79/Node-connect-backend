@@ -40,4 +40,4 @@ jobs:
         run: npm run build --if-present
 
       - name: Restart pm2
-        run: sudo pm2 start server.js -f
+        run: sudo pm2 restart server
